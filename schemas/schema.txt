@@ -1,0 +1,33 @@
+                 ┌────────────────────────────┐
+                 │        FastAPI UI          │
+                 │   (Upload document + ask)  │
+                 └────────────┬───────────────┘
+                              │
+                              ▼
+           ┌────────────────────────────────────┐
+           │         Document Initialization    │
+           │   - Loads .txt                     │
+           │   - Chunks + embeds with FAISS     │
+           └────────────────┬───────────────────┘
+                            ▼
+                   ┌──────────────┐
+                   │  Question    │
+                   │   Input      │
+                   └─────┬────────┘
+                         ▼
+         ┌──────────────────────────────────┐
+         │     Step 1: Interpreter Agent    │
+         │  - Rephrases and analyzes query  │
+         └────────────────┬─────────────────┘
+                          ▼
+         ┌──────────────────────────────────┐
+         │     Step 2: Retriever Agent      │
+         │  - Searches FAISS vector store   │
+         │  - Returns relevant chunks       │
+         └────────────────┬─────────────────┘
+                          ▼
+         ┌──────────────────────────────────┐
+         │      Step 3: Writer Agent        │
+         │  - Generates final answer        │
+         │  - Stores answer as .md file     │
+         └──────────────────────────────────┘

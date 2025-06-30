@@ -1,0 +1,16 @@
+
+Stability Testing Report for API-X (Active Pharmaceutical Ingredient X)
+
+Objective:
+The purpose of this study is to evaluate the chemical and physical stability of API-X under various environmental conditions including temperature, humidity, and light exposure.
+
+Methodology:
+Samples were stored at 25°C/60%RH, 30°C/65%RH, and 40°C/75%RH for up to 12 months. Analytical methods included HPLC for purity and degradation, moisture analysis, and visual inspection.
+
+Findings:
+- The primary degradation products are compound A and compound B, which increase significantly at 40°C.
+- No significant changes in appearance or moisture content were observed across all conditions.
+- Shelf-life of API-X is estimated to be 24 months under normal storage.
+
+Conclusion:
+API-X is chemically stable under standard ICH conditions. The primary degradation pathways involve hydrolysis and oxidation, particularly at elevated temperatures.
