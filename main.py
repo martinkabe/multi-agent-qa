@@ -22,5 +22,3 @@ async def ask_question(question: str = Form(...)):
         return JSONResponse(content={"error": "Agent not initialized"}, status_code=400)
     result = agent.invoke({"input": question})
     return {"answer": result["output"]}
-
-# uvicorn main:app --reload
