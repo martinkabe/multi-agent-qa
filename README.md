@@ -1,3 +1,12 @@
+Download LLMs via Huggingface Github
+
+```bash
+# for vector embeddings
+git clone git@hf.co:sentence-transformers/all-mpnet-base-v2
+# LLM instruct
+git clone git@hf.co:meta-llama/Llama-3.2-1B-Instruct
+```
+
 Run API via uvicorn
 
 ```bash

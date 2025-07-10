@@ -9,7 +9,8 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.chains import RetrievalQA
 from config import llm
 
-embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+# embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+embedding_model = HuggingFaceEmbeddings(model_name=f"{os.getenv('MODEL_LOCATION')}/all-mpnet-base-v2")
 
 vectorstore = None
 retriever_chain = None
