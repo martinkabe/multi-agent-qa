@@ -1,15 +1,15 @@
-
 import streamlit as st
-from planner import create_agent
-from tools import init_vectorstore
+from tools import init_vectorstore, interpreter_tool, retriever_tool, writer_tool
 import os
 import glob
+import sys
+from io import StringIO
 
-st.set_page_config(page_title="Multi-Agent QA System", layout="centered")
-st.title("📄 Multi-Agent Document QA (Planner-based)")
+st.set_page_config(page_title="Multi-Agent QA System (Manual)", layout="centered")
+st.title("📄 Multi-Agent Document QA (Manual Chain)")
 
-if "agent" not in st.session_state:
-    st.session_state.agent = None
+if "initialized" not in st.session_state:
+    st.session_state.initialized = False
 if "log" not in st.session_state:
     st.session_state.log = ""
 
@@ -17,35 +17,37 @@ if "log" not in st.session_state:
 st.sidebar.header("Upload Document")
 uploaded_file = st.sidebar.file_uploader("Choose a .txt file", type="txt")
 
-if uploaded_file and st.session_state.agent is None:
+if uploaded_file and not st.session_state.initialized:
     content = uploaded_file.read().decode("utf-8")
     init_vectorstore(content)
-    st.session_state.agent = create_agent()
-    st.success("✅ Document uploaded and agent initialized!")
+    st.session_state.initialized = True
+    st.success("✅ Document uploaded and vectorstore initialized!")
 
 # Ask question
-if st.session_state.agent:
+if st.session_state.initialized:
     question = st.text_input("Enter your question about the document:")
     if question:
-        with st.spinner("Running multi-agent pipeline..."):
-            import sys
-            from io import StringIO
-
-            # Capture stdout
+        with st.spinner("Running multi-agent chain..."):
             old_stdout = sys.stdout
             sys.stdout = mystdout = StringIO()
 
-            result = st.session_state.agent.invoke({"input": question})
+            refined = interpreter_tool.invoke(question)
+            print("🔍 Refined Question:", refined)
 
-            # Reset stdout
+            evidence = retriever_tool.invoke(refined)
+            print("📚 Retrieved Evidence:\n", evidence)
+
+            final_answer = writer_tool.invoke(evidence)
+            print("✅ Final Answer:\n", final_answer)
+
             sys.stdout = old_stdout
             log_output = mystdout.getvalue()
             st.session_state.log = log_output
 
-        st.text_area("🔍 Agent Trace Log", value=st.session_state.log, height=300)
+        st.text_area("🧠 Execution Log", value=st.session_state.log, height=300)
 
         st.success("✅ Final Answer:")
-        st.write(result["output"])
+        st.write(final_answer)
 
         # Show most recent .md file
         md_files = sorted(glob.glob("reports/*.md"), key=os.path.getmtime, reverse=True)

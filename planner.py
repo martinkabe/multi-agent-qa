@@ -9,6 +9,7 @@ def create_agent():
         tools=tools,
         llm=llm,
         agent=AgentType.OPENAI_FUNCTIONS,
-        verbose=True
+        verbose=True,
+        handle_parsing_errors=True
     )
     return agent

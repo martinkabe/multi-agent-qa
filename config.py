@@ -27,8 +27,5 @@ llm_pipeline = pipeline(
     pad_token_id=tokenizer.eos_token_id
 )
 
-output = llm_pipeline("What is the capital of France?", max_new_tokens=50)
-print(output[0]["generated_text"])
-
 # LangChain-compatible LLM
 llm = HuggingFacePipeline(pipeline=llm_pipeline)
