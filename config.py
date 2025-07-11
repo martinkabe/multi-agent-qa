@@ -23,8 +23,9 @@ llm_pipeline = pipeline(
     "text-generation",
     model=model,
     tokenizer=tokenizer,
-    # max_new_tokens=512,
-    pad_token_id=tokenizer.eos_token_id
+    max_new_tokens=512,
+    pad_token_id=tokenizer.eos_token_id,
+    return_full_text=False
 )
 
 # LangChain-compatible LLM

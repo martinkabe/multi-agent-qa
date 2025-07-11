@@ -2,10 +2,8 @@ from fastapi import FastAPI, UploadFile, Form
 from fastapi.responses import JSONResponse
 from tools import init_vectorstore, interpreter_tool, retriever_tool, writer_tool
 
-
 app = FastAPI()
-initialized = False  # flag instead of agent
-
+initialized = False  # Flag to check if vectorstore is initialized
 
 @app.post("/initialize/")
 async def initialize(file: UploadFile):
@@ -16,15 +14,14 @@ async def initialize(file: UploadFile):
     initialized = True
     return {"status": "initialized"}
 
-
 @app.post("/ask/")
 async def ask_question(question: str = Form(...)):
     if not initialized:
         return JSONResponse(content={"error": "Document not initialized"}, status_code=400)
-    
-    # Manual tool chain execution
-    refined = interpreter_tool.invoke(question)
-    evidence = retriever_tool.invoke(refined)
-    final_answer = writer_tool.invoke(evidence)
 
-    return {"answer": final_answer}
+    # Run toolchain
+    refined = interpreter_tool.invoke({"question": question})
+    evidence = retriever_tool.invoke({"query": refined})
+    final_answer = writer_tool.invoke({"context": evidence, "question": question})
+
+    return {"refined_question": refined, "evidence": evidence, "answer": final_answer}

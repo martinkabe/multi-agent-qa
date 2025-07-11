@@ -31,13 +31,13 @@ if st.session_state.initialized:
             old_stdout = sys.stdout
             sys.stdout = mystdout = StringIO()
 
-            refined = interpreter_tool.invoke(question)
+            refined = interpreter_tool.invoke({"question": question})
             print("🔍 Refined Question:", refined)
 
-            evidence = retriever_tool.invoke(refined)
+            evidence = retriever_tool.invoke({"query": refined})
             print("📚 Retrieved Evidence:\n", evidence)
 
-            final_answer = writer_tool.invoke(evidence)
+            final_answer = writer_tool.invoke({"context": evidence, "question": question})
             print("✅ Final Answer:\n", final_answer)
 
             sys.stdout = old_stdout
